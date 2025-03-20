@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">rentcar</string>
+    <string name="load_activity_subtitle">Поможем найти твою следующую поездку</string>
+    <string name="load_activity_title">DriveNext\n</string>
+    <string name="load_activity_image_description">loadingImageDesc\n</string>
+    <string name="not_connected_to_internet">Нет подключения \nк интернету</string>
+    <string name="not_connected_to_internet_subtitle">Проверьте подключение и повторите попытку!</string>
+    <string name="return_try_connection_internet">Повторить попытку</string>
+    <string name="rent_car">Аренда автомобилей</string>
+    <string name="subtext_onb1">Открой для себя удобный и доступный способ передвижения</string>
+</resources>
