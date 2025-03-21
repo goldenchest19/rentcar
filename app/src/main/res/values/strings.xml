@@ -8,4 +8,7 @@
     <string name="return_try_connection_internet">Повторить попытку</string>
     <string name="rent_car">Аренда автомобилей</string>
     <string name="subtext_onb1">Открой для себя удобный и доступный способ передвижения</string>
+    <string name="activity_no_connection_not_internet">Нет подключения к интернету</string>
+    <string name="return_attempt">Повторить попытку</string>
+    <string name="activity_no_connection_subtext">Проверьте подключение и повторите попытку</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import ru.juni.rentcar.auth.AuthChoiceActivity
 import ru.juni.rentcar.databinding.ActivityOnboardingBinding
 
 class OnboardingActivity : AppCompatActivity() {
@@ -23,10 +24,9 @@ class OnboardingActivity : AppCompatActivity() {
         viewPager.adapter = adapter
 
         // Обработка кнопок
-//        binding.skipButton.setOnClickListener {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
+        binding.skipButton.setOnClickListener {
+            finishOnboarding()
+        }
 
         binding.nextButton.setOnClickListener {
             if (viewPager.currentItem < adapter.itemCount - 1) {
@@ -34,10 +34,9 @@ class OnboardingActivity : AppCompatActivity() {
             }
         }
 
-//        binding.startButton.setOnClickListener {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
+        binding.startButton.setOnClickListener {
+            finishOnboarding()
+        }
 
         // Скрыть/показать кнопки при перелистывании
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -53,6 +52,12 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun finishOnboarding() {
+        saveOnboardingState()
+        startActivity(Intent(this, AuthChoiceActivity::class.java))
+        finish()
     }
 
     private fun saveOnboardingState() {

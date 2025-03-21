@@ -18,18 +18,16 @@ class SplashActivity : AppCompatActivity() {
             if (isUserLoggedIn()) {
                 // Переход на главный экран
                 startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                // Переход на экран онбординга
+                startActivity(Intent(this, OnboardingActivity::class.java))
             }
-//            else {
-//                // Переход на экран входа
-//                startActivity(Intent(this, LoginActivity::class.java))
-//            }
             finish() // Закрыть SplashActivity
         }, 3000) // Задержка 3 секунды
     }
 
     private fun isUserLoggedIn(): Boolean {
-        // Логика проверки, авторизован ли пользователь
-        // Например, проверка токена в SharedPreferences
-        return false // Замени на реальную проверку
+        // Временно возвращаем false для тестирования онбординга
+        return false
     }
 }

@@ -1,52 +1,78 @@
 package ru.juni.rentcar
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import ru.juni.rentcar.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var connectivityManager: ConnectivityManager
+    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-
-        // Инициализация SharedPreferences
-        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-
-        // Проверка, был ли показан онбординг
-        if (!isOnboardingCompleted()) {
-            startActivity(Intent(this, OnboardingActivity::class.java))
-            finish()
-        } else {
-            setupMainScreen()
-        }
-        
-
-        // Обработка системных окон (Edge-to-Edge)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        setupNetworkCallback()
+        checkInternetConnection()
     }
 
-    // Проверка, был ли завершен онбординг
-    private fun isOnboardingCompleted(): Boolean {
-        return sharedPreferences.getBoolean("onboarding_completed", false)
+    private fun checkInternetConnection() {
+        if (!isInternetAvailable()) {
+            startActivity(NoConnectionActivity.createIntent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
-    // Настройка основного экрана
-    private fun setupMainScreen() {
-        // Здесь можно добавить логику для основного экрана
-        // Например, загрузка данных, настройка UI и т.д.
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+    }
+
+    private fun setupNetworkCallback() {
+        connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onLost(network: Network) {
+                runOnUiThread {
+                    startActivity(NoConnectionActivity.createIntent(this@MainActivity, MainActivity::class.java))
+                    finish()
+                }
+            }
+        }
+
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityManager.unregisterNetworkCallback(networkCallback)
     }
 }
