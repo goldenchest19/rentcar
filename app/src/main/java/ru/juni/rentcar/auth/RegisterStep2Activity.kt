@@ -12,12 +12,21 @@ import ru.juni.rentcar.databinding.ActivityRegisterStep2Binding
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Второй шаг регистрации пользователя.
+ * Позволяет пользователю указать свои личные данные.
+ */
 class RegisterStep2Activity : AppCompatActivity() {
 
+    // View Binding для доступа к элементам интерфейса
     private lateinit var binding: ActivityRegisterStep2Binding
+    // Выбранная дата рождения
     private var selectedDate: Calendar? = null
+    // Форматтер для отображения даты
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    // Email пользователя, полученный с предыдущего шага
     private lateinit var email: String
+    // Пароль пользователя, полученный с предыдущего шага
     private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +46,10 @@ class RegisterStep2Activity : AppCompatActivity() {
         setupClickListeners()
     }
 
+    /**
+     * Настраивает слушатели изменений текста для полей ввода.
+     * При каждом изменении текста вызывается валидация полей.
+     */
     private fun setupTextWatchers() {
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -51,19 +64,26 @@ class RegisterStep2Activity : AppCompatActivity() {
         binding.etMiddleName.addTextChangedListener(textWatcher)
     }
 
+    /**
+     * Настраивает обработчики нажатий для всех интерактивных элементов экрана.
+     */
     private fun setupClickListeners() {
+        // Возврат на предыдущий экран
         binding.btnBack.setOnClickListener {
             finish()
         }
 
+        // Открытие диалога выбора даты рождения
         binding.etBirthDate.setOnClickListener {
             showDatePicker()
         }
 
+        // Обработка изменения выбранного пола
         binding.rgGender.setOnCheckedChangeListener { _, _ ->
             validateInputs()
         }
 
+        // Переход к следующему шагу регистрации
         binding.btnNext.setOnClickListener {
             if (validateInputs(true)) {
                 val intent = Intent(this, RegisterStep3Activity::class.java).apply {
@@ -80,6 +100,10 @@ class RegisterStep2Activity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Отображает диалог выбора даты рождения.
+     * Устанавливает ограничения на выбор даты (от 18 до 100 лет).
+     */
     private fun showDatePicker() {
         val calendar = selectedDate ?: Calendar.getInstance()
         
@@ -111,6 +135,11 @@ class RegisterStep2Activity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Проверяет корректность введенных данных.
+     * @param showErrors true для отображения ошибок, false для тихой проверки
+     * @return true если все данные валидны, false в противном случае
+     */
     private fun validateInputs(showErrors: Boolean = false): Boolean {
         val lastName = binding.etLastName.text.toString().trim()
         val firstName = binding.etFirstName.text.toString().trim()

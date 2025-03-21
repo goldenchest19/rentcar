@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.juni.rentcar.databinding.ItemOnboardingBinding
-import ru.juni.rentcar.onboarding.OnboardingItem
 
 /**
  * Адаптер для отображения слайдов онбординга в ViewPager2.

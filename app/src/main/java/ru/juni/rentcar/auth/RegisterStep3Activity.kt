@@ -15,15 +15,24 @@ import ru.juni.rentcar.databinding.ActivityRegisterStep3Binding
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Третий шаг регистрации пользователя.
+ * Позволяет пользователю загрузить необходимые документы и указать информацию о водительском удостоверении.
+ */
 class RegisterStep3Activity : AppCompatActivity() {
 
+    // View Binding для доступа к элементам интерфейса
     private lateinit var binding: ActivityRegisterStep3Binding
+    // Выбранная дата выдачи водительского удостоверения
     private var selectedDate: Calendar? = null
+    // Форматтер для отображения даты
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    // URI загруженных фотографий
     private var profilePhotoUri: Uri? = null
     private var licensePhotoUri: Uri? = null
     private var passportPhotoUri: Uri? = null
 
+    // Launcher для загрузки фото профиля
     private val profilePhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             profilePhotoUri = result.data?.data
@@ -32,6 +41,7 @@ class RegisterStep3Activity : AppCompatActivity() {
         }
     }
 
+    // Launcher для загрузки фото водительского удостоверения
     private val licensePhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             licensePhotoUri = result.data?.data
@@ -40,6 +50,7 @@ class RegisterStep3Activity : AppCompatActivity() {
         }
     }
 
+    // Launcher для загрузки фото паспорта
     private val passportPhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             passportPhotoUri = result.data?.data
@@ -57,6 +68,10 @@ class RegisterStep3Activity : AppCompatActivity() {
         setupClickListeners()
     }
 
+    /**
+     * Настраивает слушатели изменений текста для полей ввода.
+     * При каждом изменении текста вызывается валидация полей.
+     */
     private fun setupTextWatchers() {
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -69,27 +84,36 @@ class RegisterStep3Activity : AppCompatActivity() {
         binding.etLicenseNumber.addTextChangedListener(textWatcher)
     }
 
+    /**
+     * Настраивает обработчики нажатий для всех интерактивных элементов экрана.
+     */
     private fun setupClickListeners() {
+        // Возврат на предыдущий экран
         binding.btnBack.setOnClickListener {
             finish()
         }
 
+        // Загрузка фото профиля
         binding.btnAddPhoto.setOnClickListener {
             openGallery(profilePhotoLauncher)
         }
 
+        // Открытие диалога выбора даты выдачи водительского удостоверения
         binding.etIssueDate.setOnClickListener {
             showDatePicker()
         }
 
+        // Загрузка фото водительского удостоверения
         binding.btnUploadLicense.setOnClickListener {
             openGallery(licensePhotoLauncher)
         }
 
+        // Загрузка фото паспорта
         binding.btnUploadPassport.setOnClickListener {
             openGallery(passportPhotoLauncher)
         }
 
+        // Завершение регистрации
         binding.btnNext.setOnClickListener {
             if (validateInputs(true)) {
                 // TODO: Отправить данные на сервер
@@ -101,6 +125,10 @@ class RegisterStep3Activity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Открывает галерею для выбора фотографии.
+     * @param launcher Launcher для обработки результата выбора фото
+     */
     private fun openGallery(launcher: androidx.activity.result.ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         launcher.launch(intent)
@@ -135,6 +163,11 @@ class RegisterStep3Activity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Проверяет корректность введенных данных.
+     * @param showErrors true для отображения ошибок, false для тихой проверки
+     * @return true если все данные валидны, false в противном случае
+     */
     private fun validateInputs(showErrors: Boolean = false): Boolean {
         val licenseNumber = binding.etLicenseNumber.text.toString().trim()
         val issueDate = binding.etIssueDate.text.toString()
