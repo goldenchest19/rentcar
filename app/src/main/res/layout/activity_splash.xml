@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/load_activity_title"
+        android:text="@string/driveNext"
         android:textColor="@color/purple"
 
         android:textSize="24sp"

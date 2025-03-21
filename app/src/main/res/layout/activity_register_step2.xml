@@ -12,7 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_back"
+        android:src="@drawable/chevron_left"
         android:contentDescription="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="Создать аккаунт"
-        android:textColor="@color/black"
+        android:text="@string/create_account"
+        android:textColor="@color/black2"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/montserrat_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
-        android:text="Фамилия"
+        android:text="@string/surname"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
@@ -49,9 +50,11 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_background"
-        android:hint="Введите фамилию"
+        android:hint="@string/write_surname"
         android:inputType="textPersonName|textCapWords"
         android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLastNameLabel" />
@@ -62,9 +65,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="Имя"
+        android:text="@string/name"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etLastName" />
 
@@ -75,9 +79,11 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_background"
-        android:hint="Введите имя"
+        android:hint="@string/write_name"
         android:inputType="textPersonName|textCapWords"
         android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvFirstNameLabel" />
@@ -88,9 +94,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="Отчество"
+        android:text="@string/middle_name"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etFirstName" />
 
@@ -101,9 +108,11 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_background"
-        android:hint="Введите отчество"
+        android:hint="@string/write_middlename"
         android:inputType="textPersonName|textCapWords"
         android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMiddleNameLabel" />
@@ -114,9 +123,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="Дата рождения"
+        android:text="@string/hb"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etMiddleName" />
 
@@ -129,8 +139,10 @@
         android:background="@drawable/edit_text_background"
         android:drawableEnd="@drawable/ic_calendar"
         android:focusable="false"
-        android:hint="DD/MM/YYYY"
+        android:hint="@string/dd_mm_yyyy"
         android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvBirthDateLabel" />
@@ -141,9 +153,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="Пол"
+        android:text="@string/sex"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etBirthDate" />
 
@@ -163,13 +176,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
-            android:text="Мужской" />
+            android:text="@string/man"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_medium" />
 
         <RadioButton
             android:id="@+id/rbFemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Женский" />
+            android:text="@string/woman"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_medium" />
     </RadioGroup>
 
     <TextView
@@ -180,6 +197,7 @@
         android:layout_marginBottom="16dp"
         android:textColor="@android:color/holo_red_light"
         android:textSize="12sp"
+        android:fontFamily="@font/montserrat_medium"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/btnNext"
         app:layout_constraintEnd_toEndOf="parent"
@@ -193,8 +211,11 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_background"
         android:enabled="false"
-        android:text="Далее"
+        android:text="@string/next"
+        android:textAllCaps="false"
         android:textColor="@color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/montserrat_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

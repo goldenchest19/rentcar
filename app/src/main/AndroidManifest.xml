@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Манифест приложения RentCar
+    Определяет основные характеристики приложения, необходимые разрешения
+    и компоненты (активности, сервисы и т.д.)
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.juni.rentcar">
 
-    <!-- Разрешение для проверки состояния сети -->
+    <!-- Разрешения для работы с интернетом и проверки состояния сети -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- Разрешение для доступа к галерее (для загрузки фотографий) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -18,7 +26,7 @@
         android:theme="@style/Theme.RentCar"
         tools:targetApi="31">
 
-        <!-- SplashActivity (экран-заставка) -->
+        <!-- Главная активность приложения -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -40,8 +48,8 @@
             </intent-filter>
         </activity>
 
-        <!-- NoConnectionActivity (экран "Нет подключения") -->
-        <activity
+        <!-- Активность для отображения экрана отсутствия интернет-соединения -->
+        <activity 
             android:name=".NoConnectionActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -71,13 +79,14 @@
             android:name=".auth.RegisterActivity"
             android:exported="false" />
 
-        <!-- RegisterStep2Activity (экран второй части регистрации) -->
-        <activity
+        <!-- Активности процесса регистрации -->
+        <activity 
+            android:name=".auth.RegisterStep1Activity"
+            android:exported="false" />
+        <activity 
             android:name=".auth.RegisterStep2Activity"
             android:exported="false" />
-
-        <!-- RegisterStep3Activity (экран третьей части регистрации) -->
-        <activity
+        <activity 
             android:name=".auth.RegisterStep3Activity"
             android:exported="false" />
 
