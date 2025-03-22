@@ -1,9 +1,10 @@
-package ru.juni.rentcar
+package ru.juni.rentcar.onboarding
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.juni.rentcar.R
 import ru.juni.rentcar.databinding.ItemOnboardingBinding
 
 /**

@@ -6,22 +6,19 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.util.Patterns
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import ru.juni.rentcar.R
+import ru.juni.rentcar.base.BaseActivity
 import ru.juni.rentcar.databinding.ActivityRegisterBinding
 
 /**
- * Первый шаг регистрации пользователя.
- * Позволяет пользователю создать базовый аккаунт, указав email и пароль.
+ * Экран регистрации пользователя.
+ * Позволяет пользователю создать новый аккаунт.
  */
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : BaseActivity() {
 
-    // View Binding для доступа к элементам интерфейса
     private lateinit var binding: ActivityRegisterBinding
-    // Флаги для отслеживания видимости паролей
     private var isPasswordVisible = false
     private var isConfirmPasswordVisible = false
 
@@ -34,64 +31,43 @@ class RegisterActivity : AppCompatActivity() {
         setupClickListeners()
     }
 
-    /**
-     * Настраивает слушатели изменений текста для полей ввода.
-     * При каждом изменении текста вызывается валидация полей.
-     */
     private fun setupTextWatchers() {
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                validateInputs(true)
+                validateInputs(false)
             }
         }
 
         binding.etEmail.addTextChangedListener(textWatcher)
         binding.etPassword.addTextChangedListener(textWatcher)
         binding.etConfirmPassword.addTextChangedListener(textWatcher)
-        binding.cbTerms.setOnCheckedChangeListener { _, _ -> validateInputs(true) }
+        binding.cbTerms.setOnCheckedChangeListener { _, _ -> validateInputs(false) }
     }
 
-    /**
-     * Настраивает обработчики нажатий для всех интерактивных элементов экрана.
-     */
     private fun setupClickListeners() {
-        // Возврат на предыдущий экран
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
-        // Переход к следующему шагу регистрации
-        binding.btnNext.setOnClickListener {
-            Log.d("RegisterActivity", "Next button clicked")
-            if (validateInputs(true)) {
-                Log.d("RegisterActivity", "Validation passed, starting RegisterStep2Activity")
-                val intent = Intent(this, RegisterStep2Activity::class.java).apply {
-                    putExtra("email", binding.etEmail.text.toString().trim())
-                    putExtra("password", binding.etPassword.text.toString())
-                }
-                startActivity(intent)
-            } else {
-                Log.d("RegisterActivity", "Validation failed")
-            }
-        }
-
-        // Переключение видимости основного пароля
-        binding.etPassword.setOnClickListener {
+        binding.btnTogglePassword.setOnClickListener {
             togglePasswordVisibility(true)
         }
 
-        // Переключение видимости подтверждения пароля
-        binding.etConfirmPassword.setOnClickListener {
+        binding.btnToggleConfirmPassword.setOnClickListener {
             togglePasswordVisibility(false)
+        }
+        
+        binding.btnBack.setOnClickListener {
+            finish() // Закрываем текущую активность и возвращаемся к предыдущей
+        }
+
+        binding.btnNext.setOnClickListener {
+            if (validateInputs(true)) {
+                checkInternetConnection()
+                startActivity(Intent(this, RegisterStep2Activity::class.java))
+                finish()
+            }
         }
     }
 
-    /**
-     * Переключает видимость паролей и обновляет иконки.
-     * @param isPassword true для основного пароля, false для подтверждения
-     */
     private fun togglePasswordVisibility(isPassword: Boolean) {
         if (isPassword) {
             isPasswordVisible = !isPasswordVisible
@@ -122,11 +98,6 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Проверяет корректность введенных данных.
-     * @param showErrors true для отображения ошибок, false для тихой проверки
-     * @return true если все данные валидны, false в противном случае
-     */
     private fun validateInputs(showErrors: Boolean = false): Boolean {
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString()

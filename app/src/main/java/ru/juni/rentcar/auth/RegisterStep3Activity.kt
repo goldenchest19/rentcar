@@ -10,7 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import ru.juni.rentcar.base.BaseActivity
 import ru.juni.rentcar.databinding.ActivityRegisterStep3Binding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,7 +19,7 @@ import java.util.*
  * Третий шаг регистрации пользователя.
  * Позволяет пользователю загрузить необходимые документы и указать информацию о водительском удостоверении.
  */
-class RegisterStep3Activity : AppCompatActivity() {
+class RegisterStep3Activity : BaseActivity() {
 
     // View Binding для доступа к элементам интерфейса
     private lateinit var binding: ActivityRegisterStep3Binding
@@ -116,7 +116,7 @@ class RegisterStep3Activity : AppCompatActivity() {
         // Завершение регистрации
         binding.btnNext.setOnClickListener {
             if (validateInputs(true)) {
-                // TODO: Отправить данные на сервер
+                checkInternetConnection()
                 val intent = Intent(this, RegistrationSuccessActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)

@@ -6,166 +6,179 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import ru.juni.rentcar.databinding.ActivityRegisterStep2Binding
+import java.util.Calendar
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import ru.juni.rentcar.R
+import ru.juni.rentcar.base.BaseActivity
+import ru.juni.rentcar.databinding.ActivityRegisterStep2Binding
 
 /**
  * Второй шаг регистрации пользователя.
- * Позволяет пользователю указать свои личные данные.
+ * Позволяет пользователю указать личные данные.
  */
-class RegisterStep2Activity : AppCompatActivity() {
+class RegisterStep2Activity : BaseActivity() {
 
-    // View Binding для доступа к элементам интерфейса
+    companion object {
+        private const val TAG = "RegisterStep2Activity"
+    }
+
     private lateinit var binding: ActivityRegisterStep2Binding
-    // Выбранная дата рождения
-    private var selectedDate: Calendar? = null
-    // Форматтер для отображения даты
+    private var surname: String = ""
+    private var name: String = ""
+    private var patronymic: String = ""
+    private var birthDate: String = ""
+    private var gender: String = "male" // По умолчанию мужской пол
+    
+    // Календарь для работы с датой
+    private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    // Email пользователя, полученный с предыдущего шага
-    private lateinit var email: String
-    // Пароль пользователя, полученный с предыдущего шага
-    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("RegisterStep2Activity", "onCreate called")
-        
-        // Получаем данные из Intent
-        email = intent.getStringExtra("email") ?: ""
-        password = intent.getStringExtra("password") ?: ""
-        
-        Log.d("RegisterStep2Activity", "Received email: $email")
-        
         binding = ActivityRegisterStep2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupTextWatchers()
         setupClickListeners()
+        setupDatePicker()
+        setupRadioButtons()
     }
 
-    /**
-     * Настраивает слушатели изменений текста для полей ввода.
-     * При каждом изменении текста вызывается валидация полей.
-     */
     private fun setupTextWatchers() {
-        val textWatcher = object : TextWatcher {
+        binding.etLastName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                validateInputs(true)
+                surname = s.toString()
+                validateInputs()
             }
-        }
+        })
 
-        binding.etLastName.addTextChangedListener(textWatcher)
-        binding.etFirstName.addTextChangedListener(textWatcher)
-        binding.etMiddleName.addTextChangedListener(textWatcher)
+        binding.etFirstName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                name = s.toString()
+                validateInputs()
+            }
+        })
+        
+        binding.etMiddleName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                patronymic = s.toString()
+                validateInputs()
+            }
+        })
     }
 
-    /**
-     * Настраивает обработчики нажатий для всех интерактивных элементов экрана.
-     */
+    private fun setupRadioButtons() {
+        // Установка обработчика выбора пола
+        binding.rgGender.setOnCheckedChangeListener { _, checkedId ->
+            gender = when (checkedId) {
+                binding.rbMale.id -> "male"
+                binding.rbFemale.id -> "female"
+                else -> "male"
+            }
+            validateInputs()
+        }
+        
+        // По умолчанию выбираем мужской пол
+        binding.rbMale.isChecked = true
+    }
+
+    private fun setupDatePicker() {
+        // Устанавливаем текущую дату как начальную
+        val today = Calendar.getInstance()
+        
+        // Настраиваем диалог выбора даты
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, monthOfYear, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, monthOfYear)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDateInView()
+            },
+            today.get(Calendar.YEAR) - 18, // По умолчанию устанавливаем 18 лет назад
+            today.get(Calendar.MONTH),
+            today.get(Calendar.DAY_OF_MONTH)
+        )
+        
+        // Ограничиваем максимальную дату (сегодня)
+        datePickerDialog.datePicker.maxDate = today.timeInMillis
+        
+        // Ограничиваем минимальную дату (100 лет назад)
+        val minDate = Calendar.getInstance()
+        minDate.add(Calendar.YEAR, -100)
+        datePickerDialog.datePicker.minDate = minDate.timeInMillis
+        
+        // Устанавливаем обработчик нажатия на поле ввода даты
+        binding.etBirthDate.setOnClickListener {
+            datePickerDialog.show()
+        }
+    }
+    
+    private fun updateDateInView() {
+        birthDate = dateFormat.format(calendar.time)
+        binding.etBirthDate.setText(birthDate)
+        validateInputs()
+    }
+
     private fun setupClickListeners() {
-        // Возврат на предыдущий экран
         binding.btnBack.setOnClickListener {
             finish()
         }
 
-        // Открытие диалога выбора даты рождения
-        binding.etBirthDate.setOnClickListener {
-            showDatePicker()
-        }
-
-        // Обработка изменения выбранного пола
-        binding.rgGender.setOnCheckedChangeListener { _, _ ->
-            validateInputs()
-        }
-
-        // Переход к следующему шагу регистрации
         binding.btnNext.setOnClickListener {
-            if (validateInputs(true)) {
-                val intent = Intent(this, RegisterStep3Activity::class.java).apply {
-                    putExtra("email", email)
-                    putExtra("password", password)
-                    putExtra("lastName", binding.etLastName.text.toString().trim())
-                    putExtra("firstName", binding.etFirstName.text.toString().trim())
-                    putExtra("middleName", binding.etMiddleName.text.toString().trim())
-                    putExtra("birthDate", binding.etBirthDate.text.toString())
-                    putExtra("gender", if (binding.rbMale.isChecked) "male" else "female")
-                }
+            if (validateInputs()) {
+                checkInternetConnection()
+                val intent = Intent(this, RegisterStep3Activity::class.java)
+                intent.putExtra("surname", surname)
+                intent.putExtra("name", name)
+                intent.putExtra("patronymic", patronymic)
+                intent.putExtra("birthDate", birthDate)
+                intent.putExtra("gender", gender)
                 startActivity(intent)
+                finish()
             }
         }
     }
 
-    /**
-     * Отображает диалог выбора даты рождения.
-     * Устанавливает ограничения на выбор даты (от 18 до 100 лет).
-     */
-    private fun showDatePicker() {
-        val calendar = selectedDate ?: Calendar.getInstance()
+    private fun validateInputs(): Boolean {
+        var isValid = true
         
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, year, month, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                selectedDate = calendar
-                binding.etBirthDate.setText(dateFormat.format(calendar.time))
-                validateInputs()
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        // Установка максимальной даты (18 лет назад)
-        val maxDate = Calendar.getInstance()
-        maxDate.add(Calendar.YEAR, -18)
-        datePickerDialog.datePicker.maxDate = maxDate.timeInMillis
-
-        // Установка минимальной даты (100 лет назад)
-        val minDate = Calendar.getInstance()
-        minDate.add(Calendar.YEAR, -100)
-        datePickerDialog.datePicker.minDate = minDate.timeInMillis
-
-        datePickerDialog.show()
-    }
-
-    /**
-     * Проверяет корректность введенных данных.
-     * @param showErrors true для отображения ошибок, false для тихой проверки
-     * @return true если все данные валидны, false в противном случае
-     */
-    private fun validateInputs(showErrors: Boolean = false): Boolean {
-        val lastName = binding.etLastName.text.toString().trim()
-        val firstName = binding.etFirstName.text.toString().trim()
-        val birthDate = binding.etBirthDate.text.toString()
-        val isGenderSelected = binding.rgGender.checkedRadioButtonId != -1
-
-        val isLastNameValid = lastName.isNotEmpty()
-        val isFirstNameValid = firstName.isNotEmpty()
-        val isBirthDateValid = birthDate.isNotEmpty()
-
-        if (showErrors) {
-            var errorMessage = ""
-            when {
-                !isLastNameValid -> errorMessage = "Пожалуйста, введите фамилию"
-                !isFirstNameValid -> errorMessage = "Пожалуйста, введите имя"
-                !isBirthDateValid -> errorMessage = "Пожалуйста, укажите дату рождения"
-                !isGenderSelected -> errorMessage = "Пожалуйста, укажите пол"
-            }
-
-            binding.tvError.text = errorMessage
-            binding.tvError.visibility = if (errorMessage.isNotEmpty()) View.VISIBLE else View.GONE
+        if (surname.isEmpty()) {
+            binding.etLastName.error = "Введите фамилию"
+            isValid = false
+        } else {
+            binding.etLastName.error = null
         }
 
-        val isValid = isLastNameValid && isFirstNameValid && isBirthDateValid && isGenderSelected
+        if (name.isEmpty()) {
+            binding.etFirstName.error = "Введите имя"
+            isValid = false
+        } else {
+            binding.etFirstName.error = null
+        }
+        
+        if (birthDate.isEmpty()) {
+            binding.etBirthDate.error = "Выберите дату рождения"
+            isValid = false
+        } else {
+            binding.etBirthDate.error = null
+        }
+        
+        // Отчество необязательное поле
+        
+        // Обновляем состояние кнопки "Далее"
         binding.btnNext.isEnabled = isValid
-
+        
         return isValid
     }
 } 

@@ -1,12 +1,14 @@
-package ru.juni.rentcar
+package ru.juni.rentcar.onboarding
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import ru.juni.rentcar.MainActivity
 import ru.juni.rentcar.auth.AuthChoiceActivity
 import ru.juni.rentcar.databinding.ActivityOnboardingBinding
+import ru.juni.rentcar.utils.TokenManager
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -17,6 +19,14 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Проверяем, не авторизован ли уже пользователь
+        val tokenManager = TokenManager.getInstance(this)
+        if (tokenManager.isTokenValid()) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
 
         // Настройка ViewPager
         viewPager = binding.onboardingViewPager

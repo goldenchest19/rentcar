@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.juni.rentcar.MainActivity
 import ru.juni.rentcar.R
 import ru.juni.rentcar.databinding.ActivityLoginBinding
+import ru.juni.rentcar.utils.TokenManager
 
 /**
  * Экран входа в приложение.
@@ -73,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.tvForgotPassword.setOnClickListener {
+            // TODO: Реализовать восстановление пароля
         }
     }
 
@@ -113,18 +115,11 @@ class LoginActivity : AppCompatActivity() {
     private fun performLogin(email: String, password: String) {
         // TODO: Реализовать API запрос для входа
         // При успешном входе:
-        saveAuthToken("your_auth_token")
+        val tokenManager = TokenManager.getInstance(this)
+        // Сохраняем токен с временем жизни 24 часа
+        tokenManager.saveToken("your_auth_token", System.currentTimeMillis() + 24 * 60 * 60 * 1000)
+        
         startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
-    }
-
-    /**
-     * Сохраняет токен авторизации в SharedPreferences.
-     * TODO: Реализовать безопасное хранение токена
-     * @param token Токен авторизации
-     */
-    private fun saveAuthToken(token: String) {
-        val sharedPreferences = getSharedPreferences("auth_prefs", MODE_PRIVATE)
-        sharedPreferences.edit().putString("auth_token", token).apply()
     }
 } 

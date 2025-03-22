@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".RentCarApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -24,9 +25,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RentCar"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- Главная активность приложения -->
+        <!-- Splash экран - единственная точка входа приложения -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -40,29 +42,19 @@
         <!-- MainActivity (основной экран) -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.RentCar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:theme="@style/Theme.RentCar" />
 
         <!-- Активность для отображения экрана отсутствия интернет-соединения -->
         <activity 
-            android:name=".NoConnectionActivity"
-            android:exported="true"
+            android:name=".utils.NoConnectionActivity"
+            android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!-- OnboardingActivity (экран онбординга) -->
         <activity
-            android:name=".OnboardingActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".onboarding.OnboardingActivity"
+            android:exported="false" />
 
         <!-- AuthChoiceActivity (экран выбора входа/регистрации) -->
         <activity
@@ -94,6 +86,36 @@
         <activity
             android:name=".auth.RegistrationSuccessActivity"
             android:exported="false" />
+
+        <!-- New activities added from the code block -->
+        <activity
+            android:name=".payment.AddCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BookActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CarDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StatusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".rentals.AllRentalsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CarSearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".rentals.RentalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".payment.PaymentActivity"
+            android:exported="false">
+        </activity>
 
     </application>
 
