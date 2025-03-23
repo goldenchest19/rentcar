@@ -6,9 +6,10 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="black2">#1A1A1A</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="gray">#666666</color>
+    <color name="gray">#FFCCCCCC</color>
+    <color name="light_gray">#F8F8F8</color>
+    <color name="black2">#1A1A1A</color>
     <color name="purple">#2B1B4D</color>
     <color name="black_text">#1A1A1A</color>
     <color name="gray_light">#CCCCCC</color>
@@ -18,4 +19,5 @@
     <color name="d0d5dd">#D0D5DD</color>
     <color name="gray3">#404040</color>
     <color name="_404040">#404040</color>
+    <color name="divider_gray">#EEEEEE</color>
 </resources>

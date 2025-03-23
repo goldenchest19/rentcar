@@ -13,7 +13,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     
     <!-- Разрешение для доступа к галерее (для загрузки фотографий) -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <!-- Разрешение для доступа к изображениям для Android 13+ -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:name=".RentCarApplication"

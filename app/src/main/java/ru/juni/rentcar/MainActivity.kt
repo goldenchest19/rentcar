@@ -7,9 +7,12 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import ru.juni.rentcar.auth.AuthChoiceActivity
 import ru.juni.rentcar.base.BaseActivity
 import ru.juni.rentcar.databinding.ActivityMainBinding
+import ru.juni.rentcar.home.HomeFragment
+import ru.juni.rentcar.settings.SettingsFragment
 import ru.juni.rentcar.utils.TokenManager
 
 /**
@@ -46,6 +49,11 @@ class MainActivity : BaseActivity() {
         
         // Инициализация UI-компонентов и загрузка данных
         setupUI()
+        
+        // По умолчанию показываем фрагмент главной страницы
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment.newInstance())
+        }
     }
     
     override fun onResume() {
@@ -64,10 +72,33 @@ class MainActivity : BaseActivity() {
     private fun setupUI() {
         Log.d(TAG, "Инициализация UI")
         
-        // Настройка обработчика нажатия на кнопку выхода
-        binding.btnLogout.setOnClickListener {
-            logout()
+        // Настройка обработчика нажатия на нижнюю панель навигации
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    loadFragment(HomeFragment.newInstance())
+                    true
+                }
+                R.id.navigation_bookmarks -> {
+                    loadFragment(BookmarksFragment.newInstance())
+                    true
+                }
+                R.id.navigation_settings -> {
+                    loadFragment(SettingsFragment.newInstance())
+                    true
+                }
+                else -> false
+            }
         }
+    }
+    
+    /**
+     * Загружает указанный фрагмент в контейнер.
+     */
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
     
     /**

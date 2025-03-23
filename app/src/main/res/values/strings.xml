@@ -1,36 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">rentcar</string>
+    <string name="app_name">Rentcar</string>
+    <string name="action_settings">Настройки</string>
+    
+    <!-- Навигация -->
+    <string name="home">Главная</string>
+    <string name="profile">Профиль</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="settings">Настройки</string>
+
+    <!-- Главный экран -->
+    <string name="search_hint">Введите марку автомобиля</string>
+    <string name="home_title">Давайте найдем автомобиль</string>
+    <string name="book_button">Забронировать</string>
+    <string name="details_button">Детали</string>
+    <string name="error_loading">Не удалось загрузить данные. Попробуйте снова.</string>
+    <string name="error_search">По запросу \"%s\" ничего не найдено</string>
+    <string name="retry">Повторить</string>
+    
+    <!-- Экран результатов поиска -->
+    <string name="search_results_title">Результаты поиска</string>
+    <string name="error_search_data">Не удалось выполнить поиск. Попробуйте снова.</string>
+    <string name="back">Назад</string>
+    <string name="no_search_results">По вашему запросу ничего не найдено</string>
+    
+    <!-- Профиль -->
+    <string name="profile_title">Профиль</string>
+    <string name="change_photo">Изменить фото</string>
+    <string name="profile_email">Электронная почта</string>
+    <string name="profile_password">Пароль</string>
+    <string name="profile_gender">Пол</string>
+    <string name="connect_google">Подключить Google</string>
+    <string name="logout">Выйти</string>
+    <string name="gender_male">Мужской</string>
+    <string name="gender_female">Женский</string>
+    <string name="gender_other">Другой</string>
+    <string name="save">Сохранить</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="other">Другой</string>
+    <string name="password">Пароль</string>
+    <string name="user_avatar_content_description">Аватар пользователя</string>
+    <string name="joined">Присоединился в %s</string>
+    
+    <!-- Настройки -->
+    <string name="settings_title">Настройки</string>
+    <string name="notifications">Уведомления</string>
+    <string name="connect_car">Подключить авто</string>
+    <string name="help">Помощь</string>
+    <string name="invite_friend">Пригласить друга</string>
+    <string name="about">О приложении</string>
+    <string name="version">Версия:</string>
+    <string name="no_notification">Нет уведомлений</string>
+    <string name="connect_your_car">Подключить авто</string>
+    <string name="my_bookings">Мои бронирования</string>
+    <string name="theme">Тема</string>
+
+    <!-- О приложении -->
+    <string name="app_version">1.0.0</string>
+    
+    <!-- Экран загрузки -->
     <string name="load_activity_subtitle">Поможем найти твою следующую поездку</string>
     <string name="load_activity_image_description">loadingImageDesc\n</string>
     <string name="not_connected_to_internet">Нет подключения \nк интернету</string>
     <string name="not_connected_to_internet_subtitle">Проверьте подключение и повторите попытку!</string>
     <string name="return_try_connection_internet">Повторить попытку</string>
     <string name="rent_car">Аренда автомобилей</string>
+    
+    <!-- Онбординг -->
     <string name="subtext_onb1">Открой для себя удобный и доступный способ передвижения</string>
-    <string name="activity_no_connection_not_internet">Нет подключения к интернету</string>
-    <string name="return_attempt">Повторить попытку</string>
-    <string name="activity_no_connection_subtext">Проверьте подключение и повторите попытку</string>
-    <string name="driveNext">DriveNext</string>
-    <string name="object_for_onboarding">object_for_onboarding</string>
-    <string name="activity_registration_header">Пользуйтесь с удовольствием</string>
-    <string name="congratulate">Поздравляем</string>
-    <string name="graduate_registration_title">Вы успешно зарегистрировались.\nОбработка ваших персональных данных займет около двух часов. Спасибо за ожидание.</string>
-    <string name="activity_next">Далее</string>
     <string name="miss">Пропустить</string>
     <string name="next">Далее</string>
     <string name="lets_go">Поехали</string>
+    <string name="activity_next">Далее</string>
+    <string name="object_for_onboarding">object_for_onboarding</string>
+    
+    <!-- Экран без подключения -->
+    <string name="activity_no_connection_not_internet">Нет подключения к интернету</string>
+    <string name="activity_no_connection_subtext">Проверьте подключение и повторите попытку</string>
+    <string name="return_attempt">Повторить попытку</string>
+    
+    <!-- Бренд -->
+    <string name="driveNext">DriveNext</string>
+    
+    <!-- Экран выбора авторизации/регистрации -->
     <string name="activity_choice_subtitle">Поможем найти твою следующую поездку</string>
+    <string name="come_in">Войти</string>
     <string name="do_registration">Зарегистрироваться</string>
-    <string name="create_account">Создать аккаунт</string>
+    
+    <!-- Экран авторизации -->
     <string name="login_account">Войдите в аккаунт</string>
     <string name="activity_login_subtitle">Пожалуйста, введите свои данные</string>
     <string name="email">Электронная почта</string>
     <string name="write_email">Введите электронную почту</string>
-    <string name="password">Пароль</string>
     <string name="write_password">Введите пароль</string>
     <string name="activity_login_forget_password">Забыли пароль?</string>
-    <string name="come_in">Войти</string>
     <string name="login_with_google">Войти через Google</string>
+    
+    <!-- Экран регистрации -->
+    <string name="create_account">Создать аккаунт</string>
+    <string name="activity_registration_header">Пользуйтесь с удовольствием</string>
+    <string name="congratulate">Поздравляем</string>
+    <string name="graduate_registration_title">Вы успешно зарегистрировались.\nОбработка ваших персональных данных займет около двух часов. Спасибо за ожидание.</string>
     <string name="write_pass">Введите пароль</string>
     <string name="write_correct_email">Введите корректный адрес электронной почты</string>
     <string name="think_password">Придумайте пароль</string>

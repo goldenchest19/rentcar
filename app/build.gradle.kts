@@ -64,4 +64,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5") // Jetpack Navigation
     implementation("androidx.compose.ui:ui:1.5.4") // Jetpack Compose
     implementation("androidx.compose.material3:material3:1.1.2") // Material 3
+    implementation("de.hdodenhof:circleimageview:3.1.0") // CircleImageView
+    implementation("com.github.bumptech.glide:glide:4.16.0") // Glide для загрузки изображений
 }
