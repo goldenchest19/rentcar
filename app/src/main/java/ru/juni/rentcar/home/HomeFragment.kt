@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.core.widget.doAfterTextChanged
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.juni.rentcar.R
@@ -35,9 +35,24 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
+        setupStatusBar()
         setupRecyclerView()
         setupSearchListener()
+        setupErrorHandling()
         loadCars()
+    }
+    
+    private fun setupStatusBar() {
+        // Делаем статус-бар прозрачным
+        val window = requireActivity().window
+        window.statusBarColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
+        
+        // Устанавливаем темные иконки на светлом (розовом) фоне
+        try {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        } catch (e: Exception) {
+            // Игнорируем возможные ошибки на старых устройствах
+        }
     }
     
     private fun setupRecyclerView() {
@@ -68,27 +83,6 @@ class HomeFragment : Fragment() {
     }
     
     private fun setupSearchListener() {
-        // Обработка ввода текста
-        binding.etSearch.doAfterTextChanged { text ->
-            val query = text.toString().trim().lowercase()
-            if (query.isEmpty()) {
-                carAdapter.updateData(allCars)
-                showCarList()
-            } else {
-                val filteredCars = allCars.filter { car ->
-                    car.brand.lowercase().contains(query) || 
-                    car.model.lowercase().contains(query)
-                }
-                
-                if (filteredCars.isEmpty()) {
-                    showError("По запросу \"$query\" ничего не найдено")
-                } else {
-                    showCarList()
-                    carAdapter.updateData(filteredCars)
-                }
-            }
-        }
-        
         // Обработка клика на иконку поиска
         binding.ivSearch.setOnClickListener {
             performSearch()
@@ -103,31 +97,44 @@ class HomeFragment : Fragment() {
             false
         }
     }
+
+    private fun setupErrorHandling() {
+        binding.btnRetry.setOnClickListener {
+            loadCars()
+        }
+    }
     
     private fun performSearch() {
         val query = binding.etSearch.text.toString().trim()
-        if (query.isNotEmpty()) {
-            // Переход на экран результатов поиска
-            val searchResultsFragment = SearchResultsFragment.newInstance(query)
-            
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, searchResultsFragment)
-                .addToBackStack(null)
-                .commit()
+        
+        if (query.isEmpty()) {
+            Toast.makeText(requireContext(), "Введите поисковый запрос", Toast.LENGTH_SHORT).show()
+            return
         }
+        
+        // Переходим на экран результатов поиска
+        val searchResultsFragment = SearchResultsFragment.newInstance(query)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, searchResultsFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+    
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.rvCars.visibility = View.GONE
+        binding.llError.visibility = View.GONE
     }
     
     private fun loadCars() {
         // Имитация загрузки данных
-        binding.progressBar.visibility = View.VISIBLE
-        binding.rvCars.visibility = View.GONE
-        binding.llError.visibility = View.GONE
+        showLoading()
         
         // В реальном приложении здесь был бы запрос к API или базе данных
         allCars.clear()
         allCars.addAll(createMockCarList())
         
-        // Имитация задержки загрузки (1 секунда)
+        // Имитация задержки загрузки
         binding.root.postDelayed({
             if (isAdded) {
                 binding.progressBar.visibility = View.GONE
@@ -139,15 +146,17 @@ class HomeFragment : Fragment() {
                     carAdapter.updateData(allCars)
                 }
             }
-        }, 1000)
+        }, 1500)
     }
     
     private fun showCarList() {
+        binding.progressBar.visibility = View.GONE
         binding.rvCars.visibility = View.VISIBLE
         binding.llError.visibility = View.GONE
     }
     
     private fun showError(message: String) {
+        binding.progressBar.visibility = View.GONE
         binding.rvCars.visibility = View.GONE
         binding.llError.visibility = View.VISIBLE
         binding.tvErrorMessage.text = message
@@ -225,6 +234,17 @@ class HomeFragment : Fragment() {
     
     override fun onDestroyView() {
         super.onDestroyView()
+        // Восстанавливаем обычный статус-бар при уходе с фрагмента
+        val window = requireActivity().window
+        window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+        
+        // Возвращаем светлые иконки на темном фоне
+        try {
+            window.decorView.systemUiVisibility = 0
+        } catch (e: Exception) {
+            // Игнорируем возможные ошибки на старых устройствах
+        }
+        
         _binding = null
     }
     

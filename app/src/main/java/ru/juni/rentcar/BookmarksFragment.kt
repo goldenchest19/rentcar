@@ -27,8 +27,7 @@ class BookmarksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        // Инициализация UI-компонентов и загрузка данных
-        setupUI()
+        // Здесь будет логика для работы с избранными автомобилями
     }
     
     /**

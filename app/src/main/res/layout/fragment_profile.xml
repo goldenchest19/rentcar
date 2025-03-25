@@ -14,7 +14,8 @@
         android:layout_marginTop="24dp"
         android:text="@string/profile"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserrat_bold"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +57,7 @@
         android:layout_marginTop="16dp"
         android:text="Иван Иванов"
         android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_bold"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Присоединился в июле 2024"
+        android:text="@string/_2025"
         android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,9 +101,10 @@
                     android:id="@+id/tvEmailLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Электронная почта"
+                    android:text="@string/email"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,9 +141,10 @@
                     android:id="@+id/tvPasswordLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Пароль"
+                    android:text="@string/password"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -173,9 +177,10 @@
                     android:id="@+id/tvGenderLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Пол"
+                    android:text="@string/sex"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -208,9 +213,10 @@
                     android:id="@+id/tvGoogleLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Google"
+                    android:text="@string/google"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -246,9 +252,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Выйти из профиля"
-                    android:textColor="@android:color/holo_red_light"
-                    android:textSize="16sp"
+                    android:text="@string/logout_from_profile"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
