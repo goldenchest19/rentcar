@@ -26,10 +26,10 @@ class BookmarksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // Здесь будет логика для работы с избранными автомобилями
     }
-    
+
     /**
      * Инициализирует пользовательский интерфейс и настраивает действия пользователя.
      */
@@ -41,7 +41,7 @@ class BookmarksFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    
+
     companion object {
         fun newInstance() = BookmarksFragment()
     }

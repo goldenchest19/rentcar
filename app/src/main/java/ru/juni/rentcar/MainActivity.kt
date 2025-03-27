@@ -31,45 +31,45 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate")
-        
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         // Инициализация менеджера токенов
         tokenManager = TokenManager.getInstance(this)
-        
+
         // Настройка отступов для работы с системными панелями
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        
+
         // Инициализация UI-компонентов и загрузка данных
         setupUI()
-        
+
         // По умолчанию показываем фрагмент главной страницы
         if (savedInstanceState == null) {
             loadFragment(HomeFragment.newInstance())
         }
     }
-    
+
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume")
     }
-    
+
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause")
     }
-    
+
     /**
      * Инициализирует пользовательский интерфейс и настраивает действия пользователя.
      */
     private fun setupUI() {
         Log.d(TAG, "Инициализация UI")
-        
+
         // Настройка обработчика нажатия на нижнюю панель навигации
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -77,19 +77,22 @@ class MainActivity : BaseActivity() {
                     loadFragment(HomeFragment.newInstance())
                     true
                 }
+
                 R.id.navigation_bookmarks -> {
                     loadFragment(BookmarksFragment.newInstance())
                     true
                 }
+
                 R.id.navigation_settings -> {
                     loadFragment(SettingsFragment.newInstance())
                     true
                 }
+
                 else -> false
             }
         }
     }
-    
+
     /**
      * Загружает указанный фрагмент в контейнер.
      */
@@ -98,7 +101,7 @@ class MainActivity : BaseActivity() {
             .replace(R.id.fragment_container, fragment)
             .commit()
     }
-    
+
     /**
      * Выполняет выход пользователя из аккаунта:
      * - очищает токен
@@ -106,13 +109,13 @@ class MainActivity : BaseActivity() {
      */
     private fun logout() {
         Log.d(TAG, "Выход из аккаунта")
-        
+
         // Очищаем токен авторизации
         tokenManager.clearToken()
-        
+
         // Показываем сообщение об успешном выходе
         Toast.makeText(this, "Вы успешно вышли из аккаунта", Toast.LENGTH_SHORT).show()
-        
+
         // Перенаправляем на экран выбора авторизации/регистрации
         val intent = Intent(this, AuthChoiceActivity::class.java)
         // Очищаем стек активностей, чтобы пользователь не мог вернуться на главный экран

@@ -13,7 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import ru.juni.rentcar.base.BaseActivity
 import ru.juni.rentcar.databinding.ActivityRegisterStep3Binding
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * Третий шаг регистрации пользователя.

@@ -5,16 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import java.util.Calendar
-import java.text.SimpleDateFormat
-import java.util.Locale
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import ru.juni.rentcar.R
 import ru.juni.rentcar.base.BaseActivity
 import ru.juni.rentcar.databinding.ActivityRegisterStep2Binding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * Второй шаг регистрации пользователя.
@@ -32,7 +27,7 @@ class RegisterStep2Activity : BaseActivity() {
     private var patronymic: String = ""
     private var birthDate: String = ""
     private var gender: String = "male" // По умолчанию мужской пол
-    
+
     // Календарь для работы с датой
     private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -66,7 +61,7 @@ class RegisterStep2Activity : BaseActivity() {
                 validateInputs()
             }
         })
-        
+
         binding.etMiddleName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -87,7 +82,7 @@ class RegisterStep2Activity : BaseActivity() {
             }
             validateInputs()
         }
-        
+
         // По умолчанию выбираем мужской пол
         binding.rbMale.isChecked = true
     }
@@ -95,7 +90,7 @@ class RegisterStep2Activity : BaseActivity() {
     private fun setupDatePicker() {
         // Устанавливаем текущую дату как начальную
         val today = Calendar.getInstance()
-        
+
         // Настраиваем диалог выбора даты
         val datePickerDialog = DatePickerDialog(
             this,
@@ -109,21 +104,21 @@ class RegisterStep2Activity : BaseActivity() {
             today.get(Calendar.MONTH),
             today.get(Calendar.DAY_OF_MONTH)
         )
-        
+
         // Ограничиваем максимальную дату (сегодня)
         datePickerDialog.datePicker.maxDate = today.timeInMillis
-        
+
         // Ограничиваем минимальную дату (100 лет назад)
         val minDate = Calendar.getInstance()
         minDate.add(Calendar.YEAR, -100)
         datePickerDialog.datePicker.minDate = minDate.timeInMillis
-        
+
         // Устанавливаем обработчик нажатия на поле ввода даты
         binding.etBirthDate.setOnClickListener {
             datePickerDialog.show()
         }
     }
-    
+
     private fun updateDateInView() {
         birthDate = dateFormat.format(calendar.time)
         binding.etBirthDate.setText(birthDate)
@@ -152,7 +147,7 @@ class RegisterStep2Activity : BaseActivity() {
 
     private fun validateInputs(): Boolean {
         var isValid = true
-        
+
         if (surname.isEmpty()) {
             binding.etLastName.error = "Введите фамилию"
             isValid = false
@@ -166,19 +161,19 @@ class RegisterStep2Activity : BaseActivity() {
         } else {
             binding.etFirstName.error = null
         }
-        
+
         if (birthDate.isEmpty()) {
             binding.etBirthDate.error = "Выберите дату рождения"
             isValid = false
         } else {
             binding.etBirthDate.error = null
         }
-        
+
         // Отчество необязательное поле
-        
+
         // Обновляем состояние кнопки "Далее"
         binding.btnNext.isEnabled = isValid
-        
+
         return isValid
     }
 } 

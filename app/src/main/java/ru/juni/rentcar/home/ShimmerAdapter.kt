@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.juni.rentcar.databinding.ItemCarShimmerBinding
 
-class ShimmerAdapter(private val itemCount: Int = 3) : RecyclerView.Adapter<ShimmerAdapter.ShimmerViewHolder>() {
+class ShimmerAdapter(private val itemCount: Int = 3) :
+    RecyclerView.Adapter<ShimmerAdapter.ShimmerViewHolder>() {
 
-    inner class ShimmerViewHolder(binding: ItemCarShimmerBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ShimmerViewHolder(binding: ItemCarShimmerBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShimmerViewHolder {
         val inflater = LayoutInflater.from(parent.context)

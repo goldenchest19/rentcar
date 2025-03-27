@@ -25,13 +25,13 @@ class SearchResultsFragment : Fragment() {
 
     private var _binding: FragmentSearchResultsBinding? = null
     private val binding get() = _binding!!
-    
+
     private lateinit var carAdapter: CarAdapter
     private lateinit var shimmerAdapter: ShimmerAdapter
     private var shimmerFrameLayout: ShimmerFrameLayout? = null
-    
+
     private val searchQuery: String by lazy { arguments?.getString(ARG_SEARCH_QUERY) ?: "" }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +39,7 @@ class SearchResultsFragment : Fragment() {
         _binding = FragmentSearchResultsBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupStatusBar()
@@ -47,16 +47,17 @@ class SearchResultsFragment : Fragment() {
         setupRecyclerView()
         setupShimmer()
         setupErrorHandling()
-        
+
         // Запускаем поиск с полученным запросом
         performSearch(searchQuery)
     }
-    
+
     private fun setupStatusBar() {
         // Делаем статус-бар прозрачным
         val window = requireActivity().window
-        window.statusBarColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
-        
+        window.statusBarColor =
+            ContextCompat.getColor(requireContext(), android.R.color.transparent)
+
         // Устанавливаем темные иконки на светлом фоне
         try {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -64,73 +65,74 @@ class SearchResultsFragment : Fragment() {
             // Игнорируем возможные ошибки на старых устройствах
         }
     }
-    
+
     private fun setupToolbar() {
         // Настраиваем заголовок
         binding.tvTitle.text = "Результаты поиска: \"$searchQuery\""
-        
+
         // Настраиваем кнопку "Назад"
         binding.ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
     }
-    
+
     private fun setupRecyclerView() {
         carAdapter = CarAdapter(
             carList = emptyList(),
             onBookClickListener = { car ->
                 // В реальном приложении здесь была бы логика бронирования
                 Toast.makeText(
-                    requireContext(), 
-                    "Автомобиль ${car.brand} ${car.model} забронирован", 
+                    requireContext(),
+                    "Автомобиль ${car.brand} ${car.model} забронирован",
                     Toast.LENGTH_SHORT
                 ).show()
             },
             onDetailsClickListener = { car ->
                 // В реальном приложении здесь был бы переход на экран деталей
                 Toast.makeText(
-                    requireContext(), 
-                    "Детали автомобиля ${car.brand} ${car.model}", 
+                    requireContext(),
+                    "Детали автомобиля ${car.brand} ${car.model}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         )
-        
+
         binding.rvSearchResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = carAdapter
         }
     }
-    
+
     private fun setupShimmer() {
         // Инициализируем ShimmerFrameLayout
         shimmerFrameLayout = view?.findViewById(R.id.shimmerFrameLayout)
-        
+
         // Настраиваем адаптер для отображения заглушек во время загрузки
         shimmerAdapter = ShimmerAdapter(4) // Показываем 4 заглушки
-        val rvShimmer = view?.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvShimmer)
+        val rvShimmer =
+            view?.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvShimmer)
         rvShimmer?.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = shimmerAdapter
         }
     }
-    
+
     private fun setupErrorHandling() {
         binding.btnRetry.setOnClickListener {
             performSearch(searchQuery)
         }
     }
-    
+
     private fun performSearch(query: String) {
         // Показываем анимацию загрузки
         showShimmer(true)
-        
+
         // В реальном приложении здесь был бы запрос к API или базе данных
         // Имитация задержки поиска
         Handler(Looper.getMainLooper()).postDelayed({
             if (isAdded) {
                 val results = searchMockCars(query)
-                
+
                 if (results.isEmpty()) {
                     showError("По запросу \"$query\" ничего не найдено")
                 } else {
@@ -140,25 +142,25 @@ class SearchResultsFragment : Fragment() {
             }
         }, 1500) // Задержка для демонстрации загрузки
     }
-    
+
     private fun searchMockCars(query: String): List<Car> {
         val allCars = createMockCarList()
-        
+
         return if (query.isEmpty()) {
             allCars
         } else {
             allCars.filter { car ->
-                car.brand.lowercase().contains(query.lowercase()) || 
-                car.model.lowercase().contains(query.lowercase())
+                car.brand.lowercase().contains(query.lowercase()) ||
+                        car.model.lowercase().contains(query.lowercase())
             }
         }
     }
-    
+
     private fun showShimmer(show: Boolean) {
         if (show) {
             binding.shimmerFrameLayout.visibility = View.VISIBLE
             binding.shimmerFrameLayout.startShimmer()
-            
+
             binding.rvSearchResults.visibility = View.GONE
             binding.progressBar.visibility = View.GONE
             binding.llError.visibility = View.GONE
@@ -167,14 +169,14 @@ class SearchResultsFragment : Fragment() {
             binding.shimmerFrameLayout.visibility = View.GONE
         }
     }
-    
+
     private fun showResults() {
         showShimmer(false)
         binding.progressBar.visibility = View.GONE
         binding.rvSearchResults.visibility = View.VISIBLE
         binding.llError.visibility = View.GONE
     }
-    
+
     private fun showError(message: String) {
         showShimmer(false)
         binding.progressBar.visibility = View.GONE
@@ -182,7 +184,7 @@ class SearchResultsFragment : Fragment() {
         binding.llError.visibility = View.VISIBLE
         binding.tvErrorMessage.text = message
     }
-    
+
     private fun createMockCarList(): List<Car> {
         return listOf(
             Car(
@@ -252,26 +254,27 @@ class SearchResultsFragment : Fragment() {
             )
         )
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         // Восстанавливаем прозрачный статус-бар при уходе с фрагмента
         val window = requireActivity().window
-        window.statusBarColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
-        
+        window.statusBarColor =
+            ContextCompat.getColor(requireContext(), android.R.color.transparent)
+
         // Возвращаем темные иконки на светлом фоне
         try {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } catch (e: Exception) {
             // Игнорируем возможные ошибки на старых устройствах
         }
-        
+
         _binding = null
     }
-    
+
     companion object {
         private const val ARG_SEARCH_QUERY = "search_query"
-        
+
         fun newInstance(searchQuery: String): SearchResultsFragment {
             return SearchResultsFragment().apply {
                 arguments = Bundle().apply {

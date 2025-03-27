@@ -21,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
 
     // View Binding для доступа к элементам интерфейса
     private lateinit var binding: ActivityLoginBinding
+
     // Флаг для отслеживания видимости пароля
     private var isPasswordVisible = false
 
@@ -118,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
         val tokenManager = TokenManager.getInstance(this)
         // Сохраняем токен с временем жизни 24 часа
         tokenManager.saveToken("your_auth_token", System.currentTimeMillis() + 24 * 60 * 60 * 1000)
-        
+
         startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
     }

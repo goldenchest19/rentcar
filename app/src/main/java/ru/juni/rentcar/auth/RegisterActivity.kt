@@ -54,7 +54,7 @@ class RegisterActivity : BaseActivity() {
         binding.btnToggleConfirmPassword.setOnClickListener {
             togglePasswordVisibility(false)
         }
-        
+
         binding.btnBack.setOnClickListener {
             finish() // Закрываем текущую активность и возвращаемся к предыдущей
         }

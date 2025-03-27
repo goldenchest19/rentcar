@@ -17,7 +17,8 @@ import ru.juni.rentcar.auth.AuthChoiceActivity
 import ru.juni.rentcar.databinding.FragmentProfileBinding
 import ru.juni.rentcar.utils.TokenManager
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
  * Фрагмент профиля пользователя.
@@ -55,44 +56,48 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // Инициализация менеджера токенов
         tokenManager = TokenManager.getInstance(requireContext())
-        
+
         // Загрузка данных пользователя
         loadUserData()
-        
+
         // Настройка обработчиков нажатий
         setupClickListeners()
     }
-    
+
     /**
      * Загружает данные пользователя из SharedPreferences.
      */
     private fun loadUserData() {
-        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        
+        val sharedPreferences =
+            requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+
         // Получаем данные пользователя
         val userName = sharedPreferences.getString("user_name", "Имя пользователя")
         val userEmail = sharedPreferences.getString("user_email", "email@example.com")
         val userGender = sharedPreferences.getString("user_gender", "Мужской")
         val userGoogleEmail = sharedPreferences.getString("user_google_email", "")
-        val joinDate = sharedPreferences.getString("join_date", SimpleDateFormat("MMMM yyyy", Locale("ru")).format(Date()))
+        val joinDate = sharedPreferences.getString(
+            "join_date",
+            SimpleDateFormat("MMMM yyyy", Locale("ru")).format(Date())
+        )
         val avatarPath = sharedPreferences.getString("avatar_path", null)
-        
+
         // Отображаем данные на экране
         binding.tvUserName.text = userName
         binding.tvEmailValue.text = userEmail
         binding.tvGenderValue.text = userGender
         binding.tvJoinDate.text = getString(R.string.joined, joinDate)
-        
+
         // Отображаем Google аккаунт, если он привязан
         if (userGoogleEmail.isNullOrEmpty()) {
             binding.tvGoogleValue.text = "Не привязан"
         } else {
             binding.tvGoogleValue.text = userGoogleEmail
         }
-        
+
         // Загружаем аватар, если путь сохранен
         if (avatarPath != null) {
             try {
@@ -106,15 +111,16 @@ class ProfileFragment : Fragment() {
             binding.ivUserAvatar.setImageResource(R.drawable.ic_person)
         }
     }
-    
+
     /**
      * Сохраняет путь к выбранному изображению аватара.
      */
     private fun saveAvatarPath(path: String) {
-        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("avatar_path", path).apply()
     }
-    
+
     /**
      * Настраивает обработчики нажатий на элементы экрана.
      */
@@ -123,24 +129,28 @@ class ProfileFragment : Fragment() {
         binding.ivEditAvatar.setOnClickListener {
             openGallery()
         }
-        
+
         // Нажатие на раздел аватара (также для выбора нового изображения)
         binding.flUserAvatar.setOnClickListener {
             openGallery()
         }
-        
+
         // Нажатие на кнопку изменения пароля
         binding.clPassword.setOnClickListener {
             // TODO: Реализовать функционал изменения пароля
-            Toast.makeText(requireContext(), "Функция изменения пароля будет доступна в следующей версии", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Функция изменения пароля будет доступна в следующей версии",
+                Toast.LENGTH_SHORT
+            ).show()
         }
-        
+
         // Нажатие на кнопку выхода из профиля
         binding.clLogout.setOnClickListener {
             logout()
         }
     }
-    
+
     /**
      * Открывает галерею для выбора нового изображения аватара.
      */
@@ -148,17 +158,17 @@ class ProfileFragment : Fragment() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickImageLauncher.launch(intent)
     }
-    
+
     /**
      * Выполняет выход пользователя из аккаунта.
      */
     private fun logout() {
         // Очищаем токен авторизации
         tokenManager.clearToken()
-        
+
         // Показываем сообщение об успешном выходе
         Toast.makeText(requireContext(), "Вы успешно вышли из аккаунта", Toast.LENGTH_SHORT).show()
-        
+
         // Перенаправляем на экран выбора авторизации/регистрации
         val intent = Intent(requireContext(), AuthChoiceActivity::class.java)
         // Очищаем стек активностей, чтобы пользователь не мог вернуться на главный экран
@@ -171,7 +181,7 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    
+
     companion object {
         fun newInstance() = ProfileFragment()
     }

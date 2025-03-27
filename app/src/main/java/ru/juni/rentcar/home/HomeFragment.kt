@@ -20,10 +20,10 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    
+
     private lateinit var carAdapter: CarAdapter
     private val allCars = mutableListOf<Car>()
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,27 +31,28 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         setupStatusBar()
         setupRecyclerView()
         setupSearchListener()
         setupErrorHandling()
         loadCars()
     }
-    
+
     override fun onResume() {
         super.onResume()
         setupStatusBar()
     }
-    
+
     private fun setupStatusBar() {
         // Делаем статус-бар прозрачным
         val window = requireActivity().window
-        window.statusBarColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
-        
+        window.statusBarColor =
+            ContextCompat.getColor(requireContext(), android.R.color.transparent)
+
         // Устанавливаем темные иконки на светлом (розовом) фоне
         try {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -59,40 +60,40 @@ class HomeFragment : Fragment() {
             // Игнорируем возможные ошибки на старых устройствах
         }
     }
-    
+
     private fun setupRecyclerView() {
         carAdapter = CarAdapter(
             carList = emptyList(),
             onBookClickListener = { car ->
                 // В реальном приложении здесь была бы логика бронирования
                 Toast.makeText(
-                    requireContext(), 
-                    "Автомобиль ${car.brand} ${car.model} забронирован", 
+                    requireContext(),
+                    "Автомобиль ${car.brand} ${car.model} забронирован",
                     Toast.LENGTH_SHORT
                 ).show()
             },
             onDetailsClickListener = { car ->
                 // В реальном приложении здесь был бы переход на экран деталей
                 Toast.makeText(
-                    requireContext(), 
-                    "Детали автомобиля ${car.brand} ${car.model}", 
+                    requireContext(),
+                    "Детали автомобиля ${car.brand} ${car.model}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         )
-        
+
         binding.rvCars.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = carAdapter
         }
     }
-    
+
     private fun setupSearchListener() {
         // Обработка клика на иконку поиска
         binding.ivSearch.setOnClickListener {
             performSearch()
         }
-        
+
         // Обработка нажатия Enter в строке поиска
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -108,15 +109,15 @@ class HomeFragment : Fragment() {
             loadCars()
         }
     }
-    
+
     private fun performSearch() {
         val query = binding.etSearch.text.toString().trim()
-        
+
         if (query.isEmpty()) {
             Toast.makeText(requireContext(), "Введите поисковый запрос", Toast.LENGTH_SHORT).show()
             return
         }
-        
+
         // Переходим на экран результатов поиска
         val searchResultsFragment = SearchResultsFragment.newInstance(query)
         requireActivity().supportFragmentManager.beginTransaction()
@@ -124,26 +125,26 @@ class HomeFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
-    
+
     private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE
         binding.rvCars.visibility = View.GONE
         binding.llError.visibility = View.GONE
     }
-    
+
     private fun loadCars() {
         // Имитация загрузки данных
         showLoading()
-        
+
         // В реальном приложении здесь был бы запрос к API или базе данных
         allCars.clear()
         allCars.addAll(createMockCarList())
-        
+
         // Имитация задержки загрузки
         binding.root.postDelayed({
             if (isAdded) {
                 binding.progressBar.visibility = View.GONE
-                
+
                 if (allCars.isEmpty()) {
                     showError("Не удалось загрузить список автомобилей")
                 } else {
@@ -153,20 +154,20 @@ class HomeFragment : Fragment() {
             }
         }, 1500)
     }
-    
+
     private fun showCarList() {
         binding.progressBar.visibility = View.GONE
         binding.rvCars.visibility = View.VISIBLE
         binding.llError.visibility = View.GONE
     }
-    
+
     private fun showError(message: String) {
         binding.progressBar.visibility = View.GONE
         binding.rvCars.visibility = View.GONE
         binding.llError.visibility = View.VISIBLE
         binding.tvErrorMessage.text = message
     }
-    
+
     private fun createMockCarList(): List<Car> {
         return listOf(
             Car(
@@ -236,23 +237,23 @@ class HomeFragment : Fragment() {
             )
         )
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         // Восстанавливаем обычный статус-бар при уходе с фрагмента
         val window = requireActivity().window
         window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
-        
+
         // Возвращаем светлые иконки на темном фоне
         try {
             window.decorView.systemUiVisibility = 0
         } catch (e: Exception) {
             // Игнорируем возможные ошибки на старых устройствах
         }
-        
+
         _binding = null
     }
-    
+
     companion object {
         fun newInstance() = HomeFragment()
     }

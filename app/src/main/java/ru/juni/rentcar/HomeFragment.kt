@@ -26,11 +26,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // Инициализация UI-компонентов и загрузка данных
         setupUI()
     }
-    
+
     /**
      * Инициализирует пользовательский интерфейс и настраивает действия пользователя.
      */
@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    
+
     companion object {
         fun newInstance() = HomeFragment()
     }
