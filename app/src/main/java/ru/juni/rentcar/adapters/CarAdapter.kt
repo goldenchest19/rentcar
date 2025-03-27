@@ -53,9 +53,7 @@ class CarAdapter(
 
             // Загрузка изображения с помощью Glide
             Glide.with(itemView.context)
-                .load(car.imageUrl)
-                .placeholder(R.drawable.ic_car_placeholder)
-                .error(R.drawable.ic_car_placeholder)
+                .load(R.drawable.car)
                 .into(ivCarImage)
 
             btnBook.setOnClickListener {

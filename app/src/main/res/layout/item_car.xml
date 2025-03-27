@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="2dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="16dp">
 
         <!-- Модель автомобиля -->
         <TextView
             android:id="@+id/tvCarModel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/ivCarImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,9 +35,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#AAAAAA"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="#9999AA"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/ivCarImage"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,38 +46,46 @@
         <!-- Цена аренды -->
         <TextView
             android:id="@+id/tvCarPrice"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/ivCarImage"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCarBrand"
-            tools:text="2500₽ в день" />
+            tools:text="5000₽" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvPricePerDay"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:fontFamily="@font/montserrat_medium"-->
+<!--            android:text="в день"-->
+<!--            android:textColor="#9999AA"-->
+<!--            android:textSize="20sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/tvCarPrice"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/tvCarPrice" />-->
 
         <!-- Изображение автомобиля -->
         <ImageView
             android:id="@+id/ivCarImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
             android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_car_placeholder" />
+            tools:src="@drawable/car" />
 
         <!-- Контейнер для спецификаций -->
         <LinearLayout
             android:id="@+id/llSpecifications"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/ivCarImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCarPrice">
 
@@ -87,12 +94,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginEnd="4dp"
                     android:tint="#9999AA"
                     app:srcCompat="@drawable/ic_transmission" />
@@ -101,8 +108,9 @@
                     android:id="@+id/tvTransmission"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textColor="#9999AA"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     tools:text="А/Т" />
             </LinearLayout>
 
@@ -110,12 +118,12 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginEnd="4dp"
                     android:tint="#9999AA"
                     app:srcCompat="@drawable/ic_fuel" />
@@ -124,48 +132,52 @@
                     android:id="@+id/tvFuelType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textColor="#9999AA"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     tools:text="Бензин" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Контейнер для кнопок -->
         <LinearLayout
+            android:id="@+id/llButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/llSpecifications">
 
             <!-- Кнопка "Забронировать" -->
             <Button
                 android:id="@+id/btnBook"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="#2A1A5E"
-                android:text="Забронировать"
+                android:backgroundTint="#2A1246"
+                android:text="@string/booking"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
-                android:textSize="16sp"
-                app:cornerRadius="16dp" />
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="14sp"
+                app:cornerRadius="11dp" />
 
             <!-- Кнопка "Детали" -->
             <Button
                 android:id="@+id/btnDetails"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:backgroundTint="#F2F2F2"
-                android:text="Детали"
+                android:backgroundTint="#FFFFFF"
+                android:text="@string/details"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                app:cornerRadius="16dp" />
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="14sp"
+                app:cornerRadius="11dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

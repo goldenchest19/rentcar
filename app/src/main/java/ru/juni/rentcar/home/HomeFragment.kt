@@ -42,6 +42,11 @@ class HomeFragment : Fragment() {
         loadCars()
     }
     
+    override fun onResume() {
+        super.onResume()
+        setupStatusBar()
+    }
+    
     private fun setupStatusBar() {
         // Делаем статус-бар прозрачным
         val window = requireActivity().window

@@ -68,7 +68,8 @@
         app:shimmer_auto_start="true"
         app:shimmer_base_alpha="0.7"
         app:shimmer_duration="800"
-        app:shimmer_highlight_alpha="0.9">
+        app:shimmer_highlight_alpha="0.9"
+        tools:ignore="MissingClass">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvShimmer"

@@ -3,80 +3,97 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="2dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="16dp">
 
-        <!-- Контейнер для иконок загрузки -->
+        <!-- Заглушка для названия модели -->
+        <View
+            android:id="@+id/shimmerModelName"
+            android:layout_width="160dp"
+            android:layout_height="24dp"
+            android:background="#EEEEEE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Заглушка для бренда -->
+        <View
+            android:id="@+id/shimmerBrand"
+            android:layout_width="120dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:background="#EEEEEE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shimmerModelName" />
+
+        <!-- Заглушка для цены -->
+        <View
+            android:id="@+id/shimmerPrice"
+            android:layout_width="140dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:background="#EEEEEE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shimmerBrand" />
+
+        <!-- Заглушка для изображения автомобиля -->
+        <View
+            android:id="@+id/shimmerCarImage"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:background="#EEEEEE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Заглушка для спецификаций -->
         <LinearLayout
-            android:id="@+id/llIcons"
-            android:layout_width="match_parent"
+            android:id="@+id/shimmerSpecs"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shimmerPrice">
 
-            <ImageView
-                android:id="@+id/ivEye"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="32dp"
-                android:alpha="0.5"
-                android:src="@drawable/ic_visibility"
-                app:tint="#9999AA" />
+            <View
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="#EEEEEE" />
 
-            <ImageView
-                android:id="@+id/ivFuel"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:alpha="0.5"
-                android:src="@drawable/ic_fuel"
-                app:tint="#9999AA" />
+            <View
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:background="#EEEEEE" />
         </LinearLayout>
 
-        <!-- Контейнер для кнопок -->
+        <!-- Заглушка для кнопок -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llIcons">
+            app:layout_constraintTop_toBottomOf="@+id/shimmerSpecs">
 
-            <!-- Кнопка "Забронировать" -->
-            <Button
-                android:id="@+id/btnBook"
+            <View
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="#2A1A5E"
-                android:text="Забронировать"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:cornerRadius="16dp" />
+                android:background="#EEEEEE" />
 
-            <!-- Кнопка "Детали" -->
-            <Button
-                android:id="@+id/btnDetails"
+            <View
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:backgroundTint="#F2F2F2"
-                android:text="Детали"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:cornerRadius="16dp" />
+                android:background="#EEEEEE" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

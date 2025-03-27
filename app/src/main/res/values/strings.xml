@@ -131,4 +131,6 @@
     <string name="logout_from_profile">Выйти из профиля</string>
     <string name="google">Google</string>
     <string name="_2025">Присоединился в феврале 2025</string>
+    <string name="details">Детали</string>
+    <string name="booking">Забронировать</string>
 </resources>

@@ -255,13 +255,13 @@ class SearchResultsFragment : Fragment() {
     
     override fun onDestroyView() {
         super.onDestroyView()
-        // Восстанавливаем обычный статус-бар при уходе с фрагмента
+        // Восстанавливаем прозрачный статус-бар при уходе с фрагмента
         val window = requireActivity().window
-        window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.purple_700)
+        window.statusBarColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
         
-        // Возвращаем светлые иконки на темном фоне
+        // Возвращаем темные иконки на светлом фоне
         try {
-            window.decorView.systemUiVisibility = 0
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } catch (e: Exception) {
             // Игнорируем возможные ошибки на старых устройствах
         }
