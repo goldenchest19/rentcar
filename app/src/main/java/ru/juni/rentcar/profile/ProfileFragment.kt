@@ -22,15 +22,37 @@ import java.util.Locale
 
 /**
  * Фрагмент профиля пользователя.
- * Отображает информацию о пользователе и предоставляет возможность редактирования.
+ *
+ * Этот фрагмент отвечает за отображение и управление профилем пользователя.
+ * Основные функции:
+ * 1. Отображение информации о пользователе (имя, email, пол, дата регистрации)
+ * 2. Управление аватаром пользователя (загрузка, изменение)
+ * 3. Привязка Google-аккаунта
+ * 4. Управление безопасностью (изменение пароля)
+ * 5. Выход из аккаунта
  */
 class ProfileFragment : Fragment() {
 
+    /**
+     * ViewBinding для доступа к элементам интерфейса.
+     * Используется для безопасного доступа к view-элементам без необходимости использования findViewById.
+     */
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    /**
+     * Менеджер для работы с токенами авторизации.
+     * Используется для управления состоянием авторизации пользователя.
+     */
     private lateinit var tokenManager: TokenManager
 
-    // Лаунчер для выбора изображения из галереи
+    /**
+     * Лаунчер для выбора изображения из галереи.
+     * Использует новый API ActivityResult для обработки выбора изображения.
+     * При успешном выборе изображения:
+     * 1. Обновляет аватар пользователя
+     * 2. Сохраняет путь к изображению в SharedPreferences
+     */
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -45,6 +67,14 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    /**
+     * Создание и инициализация view-элементов фрагмента.
+     *
+     * @param inflater Инфлейтер для создания view из layout-файла
+     * @param container Родительский контейнер для view
+     * @param savedInstanceState Сохраненное состояние фрагмента
+     * @return Корневой view фрагмента
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +84,13 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Инициализация фрагмента после создания view.
+     * Выполняет следующие действия:
+     * 1. Инициализирует менеджер токенов
+     * 2. Загружает данные пользователя
+     * 3. Настраивает обработчики нажатий
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,6 +106,14 @@ class ProfileFragment : Fragment() {
 
     /**
      * Загружает данные пользователя из SharedPreferences.
+     *
+     * Загружает и отображает:
+     * - Имя пользователя
+     * - Email
+     * - Пол
+     * - Email Google-аккаунта (если привязан)
+     * - Дату регистрации
+     * - Аватар пользователя
      */
     private fun loadUserData() {
         val sharedPreferences =
@@ -113,7 +158,9 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Сохраняет путь к выбранному изображению аватара.
+     * Сохраняет путь к выбранному изображению аватара в SharedPreferences.
+     *
+     * @param path URI выбранного изображения
      */
     private fun saveAvatarPath(path: String) {
         val sharedPreferences =
@@ -123,6 +170,12 @@ class ProfileFragment : Fragment() {
 
     /**
      * Настраивает обработчики нажатий на элементы экрана.
+     *
+     * Обрабатывает нажатия на:
+     * - Кнопку редактирования аватара
+     * - Область аватара
+     * - Раздел изменения пароля
+     * - Кнопку выхода из аккаунта
      */
     private fun setupClickListeners() {
         // Нажатие на кнопку редактирования аватара
@@ -153,6 +206,7 @@ class ProfileFragment : Fragment() {
 
     /**
      * Открывает галерею для выбора нового изображения аватара.
+     * Использует стандартный Intent для выбора изображения из галереи.
      */
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -161,6 +215,12 @@ class ProfileFragment : Fragment() {
 
     /**
      * Выполняет выход пользователя из аккаунта.
+     *
+     * Действия при выходе:
+     * 1. Очищает токен авторизации
+     * 2. Показывает сообщение об успешном выходе
+     * 3. Перенаправляет на экран выбора авторизации/регистрации
+     * 4. Очищает стек активностей
      */
     private fun logout() {
         // Очищаем токен авторизации
@@ -177,12 +237,21 @@ class ProfileFragment : Fragment() {
         requireActivity().finish()
     }
 
+    /**
+     * Очистка ресурсов при уничтожении view.
+     * Освобождает ссылку на binding для предотвращения утечек памяти.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
+        /**
+         * Создает новый экземпляр фрагмента профиля.
+         *
+         * @return Новый экземпляр ProfileFragment
+         */
         fun newInstance() = ProfileFragment()
     }
 } 

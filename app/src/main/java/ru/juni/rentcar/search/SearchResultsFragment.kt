@@ -20,18 +20,52 @@ import java.util.UUID
 
 /**
  * Фрагмент для отображения результатов поиска автомобилей.
+ *
+ * Этот фрагмент отвечает за:
+ * 1. Отображение результатов поиска автомобилей
+ * 2. Анимацию загрузки с использованием эффекта мерцания (shimmer)
+ * 3. Обработку ошибок и пустых результатов
+ * 4. Навигацию между экранами
+ * 5. Взаимодействие с пользователем (бронирование, просмотр деталей)
  */
 class SearchResultsFragment : Fragment() {
 
+    /**
+     * ViewBinding для доступа к элементам интерфейса.
+     * Используется для безопасного доступа к view-элементам без необходимости использования findViewById.
+     */
     private var _binding: FragmentSearchResultsBinding? = null
     private val binding get() = _binding!!
 
+    /**
+     * Адаптер для отображения списка найденных автомобилей.
+     */
     private lateinit var carAdapter: CarAdapter
+
+    /**
+     * Адаптер для отображения эффекта загрузки (shimmer).
+     */
     private lateinit var shimmerAdapter: ShimmerAdapter
+
+    /**
+     * Контейнер для эффекта мерцания.
+     */
     private var shimmerFrameLayout: ShimmerFrameLayout? = null
 
+    /**
+     * Поисковый запрос, переданный в фрагмент.
+     * Получается из аргументов фрагмента.
+     */
     private val searchQuery: String by lazy { arguments?.getString(ARG_SEARCH_QUERY) ?: "" }
 
+    /**
+     * Создание и инициализация view-элементов фрагмента.
+     *
+     * @param inflater Инфлейтер для создания view из layout-файла
+     * @param container Родительский контейнер для view
+     * @param savedInstanceState Сохраненное состояние фрагмента
+     * @return Корневой view фрагмента
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +74,16 @@ class SearchResultsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Инициализация фрагмента после создания view.
+     * Выполняет следующие действия:
+     * 1. Настройка статус-бара
+     * 2. Настройка панели инструментов
+     * 3. Настройка списка результатов
+     * 4. Настройка эффекта загрузки
+     * 5. Настройка обработки ошибок
+     * 6. Запуск поиска
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupStatusBar()
@@ -52,6 +96,10 @@ class SearchResultsFragment : Fragment() {
         performSearch(searchQuery)
     }
 
+    /**
+     * Настройка внешнего вида статус-бара.
+     * Делает статус-бар прозрачным и устанавливает темные иконки.
+     */
     private fun setupStatusBar() {
         // Делаем статус-бар прозрачным
         val window = requireActivity().window
@@ -66,6 +114,10 @@ class SearchResultsFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка панели инструментов.
+     * Устанавливает заголовок и обработчик кнопки "Назад".
+     */
     private fun setupToolbar() {
         // Настраиваем заголовок
         binding.tvTitle.text = "Результаты поиска: \"$searchQuery\""
@@ -76,6 +128,10 @@ class SearchResultsFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка списка результатов поиска.
+     * Инициализирует адаптер и устанавливает обработчики событий.
+     */
     private fun setupRecyclerView() {
         carAdapter = CarAdapter(
             carList = emptyList(),
@@ -103,6 +159,10 @@ class SearchResultsFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка эффекта загрузки (shimmer).
+     * Инициализирует ShimmerFrameLayout и адаптер для отображения заглушек.
+     */
     private fun setupShimmer() {
         // Инициализируем ShimmerFrameLayout
         shimmerFrameLayout = view?.findViewById(R.id.shimmerFrameLayout)
@@ -117,12 +177,21 @@ class SearchResultsFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка обработки ошибок.
+     * Добавляет возможность повторного поиска при ошибке.
+     */
     private fun setupErrorHandling() {
         binding.btnRetry.setOnClickListener {
             performSearch(searchQuery)
         }
     }
 
+    /**
+     * Выполнение поиска автомобилей.
+     *
+     * @param query Поисковый запрос
+     */
     private fun performSearch(query: String) {
         // Показываем анимацию загрузки
         showShimmer(true)
@@ -143,6 +212,12 @@ class SearchResultsFragment : Fragment() {
         }, 1500) // Задержка для демонстрации загрузки
     }
 
+    /**
+     * Поиск автомобилей в тестовых данных.
+     *
+     * @param query Поисковый запрос
+     * @return Список найденных автомобилей
+     */
     private fun searchMockCars(query: String): List<Car> {
         val allCars = createMockCarList()
 
@@ -156,6 +231,11 @@ class SearchResultsFragment : Fragment() {
         }
     }
 
+    /**
+     * Управление отображением эффекта загрузки.
+     *
+     * @param show Показывать ли эффект загрузки
+     */
     private fun showShimmer(show: Boolean) {
         if (show) {
             binding.shimmerFrameLayout.visibility = View.VISIBLE
@@ -170,6 +250,10 @@ class SearchResultsFragment : Fragment() {
         }
     }
 
+    /**
+     * Отображение результатов поиска.
+     * Скрывает эффект загрузки и показывает список результатов.
+     */
     private fun showResults() {
         showShimmer(false)
         binding.progressBar.visibility = View.GONE
@@ -177,6 +261,11 @@ class SearchResultsFragment : Fragment() {
         binding.llError.visibility = View.GONE
     }
 
+    /**
+     * Отображение ошибки.
+     *
+     * @param message Текст сообщения об ошибке
+     */
     private fun showError(message: String) {
         showShimmer(false)
         binding.progressBar.visibility = View.GONE
@@ -185,6 +274,12 @@ class SearchResultsFragment : Fragment() {
         binding.tvErrorMessage.text = message
     }
 
+    /**
+     * Создание тестового списка автомобилей.
+     * В реальном приложении данные должны загружаться с сервера.
+     *
+     * @return Список тестовых автомобилей
+     */
     private fun createMockCarList(): List<Car> {
         return listOf(
             Car(
@@ -273,13 +368,20 @@ class SearchResultsFragment : Fragment() {
     }
 
     companion object {
+        /**
+         * Ключ для передачи поискового запроса в аргументах фрагмента.
+         */
         private const val ARG_SEARCH_QUERY = "search_query"
 
-        fun newInstance(searchQuery: String): SearchResultsFragment {
-            return SearchResultsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_SEARCH_QUERY, searchQuery)
-                }
+        /**
+         * Создает новый экземпляр фрагмента с поисковым запросом.
+         *
+         * @param query Поисковый запрос
+         * @return Новый экземпляр SearchResultsFragment
+         */
+        fun newInstance(query: String) = SearchResultsFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_SEARCH_QUERY, query)
             }
         }
     }

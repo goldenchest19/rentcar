@@ -14,14 +14,41 @@ import ru.juni.rentcar.utils.TokenManager
 
 /**
  * Фрагмент настроек приложения.
- * Отображает профиль пользователя и опции настроек.
+ * 
+ * Этот фрагмент является центральным местом для управления настройками приложения и профилем пользователя.
+ * Основные функции:
+ * 1. Отображение информации о пользователе
+ * 2. Навигация к различным разделам настроек
+ * 3. Управление темами приложения
+ * 4. Настройка уведомлений
+ * 5. Управление бронированиями
+ * 6. Подключение собственного автомобиля
+ * 7. Доступ к помощи и поддержке
+ * 8. Приглашение друзей
  */
 class SettingsFragment : Fragment() {
 
+    /**
+     * ViewBinding для доступа к элементам интерфейса.
+     * Используется для безопасного доступа к view-элементам без необходимости использования findViewById.
+     */
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+
+    /**
+     * Менеджер для работы с токенами авторизации.
+     * Используется для управления состоянием авторизации пользователя.
+     */
     private lateinit var tokenManager: TokenManager
 
+    /**
+     * Создание и инициализация view-элементов фрагмента.
+     * 
+     * @param inflater Инфлейтер для создания view из layout-файла
+     * @param container Родительский контейнер для view
+     * @param savedInstanceState Сохраненное состояние фрагмента
+     * @return Корневой view фрагмента
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,6 +58,13 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Инициализация фрагмента после создания view.
+     * Выполняет следующие действия:
+     * 1. Инициализирует менеджер токенов
+     * 2. Загружает данные пользователя
+     * 3. Настраивает обработчики нажатий на пункты меню
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,6 +80,10 @@ class SettingsFragment : Fragment() {
 
     /**
      * Загружает данные пользователя из SharedPreferences и отображает их в интерфейсе.
+     * 
+     * Загружает и отображает:
+     * - Имя пользователя
+     * - Email пользователя
      */
     private fun loadUserData() {
         // Получение данных пользователя из SharedPreferences
@@ -61,6 +99,15 @@ class SettingsFragment : Fragment() {
 
     /**
      * Настраивает обработчики нажатий на пункты меню настроек.
+     * 
+     * Обрабатывает нажатия на следующие разделы:
+     * 1. Профиль пользователя
+     * 2. Мои бронирования
+     * 3. Настройки темы
+     * 4. Настройки уведомлений
+     * 5. Подключение автомобиля
+     * 6. Помощь и поддержка
+     * 7. Приглашение друзей
      */
     private fun setupClickListeners() {
         // Обработчик нажатия на профиль пользователя
@@ -108,6 +155,9 @@ class SettingsFragment : Fragment() {
 
     /**
      * Переходит на экран профиля пользователя.
+     * 
+     * Заменяет текущий фрагмент на ProfileFragment и добавляет транзакцию
+     * в стек возврата для возможности возврата на экран настроек.
      */
     private fun navigateToProfile() {
         parentFragmentManager.beginTransaction()
@@ -118,17 +168,28 @@ class SettingsFragment : Fragment() {
 
     /**
      * Показывает уведомление пользователю.
+     * 
+     * @param message Текст сообщения для отображения
      */
     private fun showMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Очистка ресурсов при уничтожении view.
+     * Освобождает ссылку на binding для предотвращения утечек памяти.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
+        /**
+         * Создает новый экземпляр фрагмента настроек.
+         * 
+         * @return Новый экземпляр SettingsFragment
+         */
         fun newInstance() = SettingsFragment()
     }
 } 

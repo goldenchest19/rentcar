@@ -16,14 +16,45 @@ import ru.juni.rentcar.models.Car
 import ru.juni.rentcar.search.SearchResultsFragment
 import java.util.UUID
 
+/**
+ * Главный фрагмент приложения, отображающий список доступных автомобилей.
+ *
+ * Этот фрагмент является центральным экраном приложения и предоставляет следующую функциональность:
+ * 1. Отображение списка автомобилей в виде карточек
+ * 2. Поиск автомобилей по различным параметрам
+ * 3. Возможность бронирования автомобиля
+ * 4. Просмотр детальной информации об автомобиле
+ * 5. Обработка ошибок и состояний загрузки
+ */
 class HomeFragment : Fragment() {
 
+    /**
+     * ViewBinding для доступа к элементам интерфейса.
+     * Используется для безопасного доступа к view-элементам без необходимости использования findViewById.
+     */
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    /**
+     * Адаптер для отображения списка автомобилей в RecyclerView.
+     * Обрабатывает отображение данных и взаимодействие с пользователем.
+     */
     private lateinit var carAdapter: CarAdapter
+
+    /**
+     * Список всех доступных автомобилей.
+     * В реальном приложении данные должны загружаться с сервера или из базы данных.
+     */
     private val allCars = mutableListOf<Car>()
 
+    /**
+     * Создание и инициализация view-элементов фрагмента.
+     *
+     * @param inflater Инфлейтер для создания view из layout-файла
+     * @param container Родительский контейнер для view
+     * @param savedInstanceState Сохраненное состояние фрагмента
+     * @return Корневой view фрагмента
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +63,10 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Инициализация фрагмента после создания view.
+     * Выполняет настройку всех компонентов интерфейса и загрузку данных.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,6 +82,10 @@ class HomeFragment : Fragment() {
         setupStatusBar()
     }
 
+    /**
+     * Настройка внешнего вида статус-бара.
+     * Делает статус-бар прозрачным и устанавливает темные иконки для лучшей читаемости.
+     */
     private fun setupStatusBar() {
         // Делаем статус-бар прозрачным
         val window = requireActivity().window
@@ -61,6 +100,10 @@ class HomeFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка RecyclerView для отображения списка автомобилей.
+     * Инициализирует адаптер и устанавливает обработчики событий.
+     */
     private fun setupRecyclerView() {
         carAdapter = CarAdapter(
             carList = emptyList(),
@@ -88,6 +131,10 @@ class HomeFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка функциональности поиска.
+     * Обрабатывает клики по иконке поиска и нажатие Enter в строке поиска.
+     */
     private fun setupSearchListener() {
         // Обработка клика на иконку поиска
         binding.ivSearch.setOnClickListener {
@@ -104,12 +151,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    /**
+     * Настройка обработки ошибок.
+     * Добавляет возможность повторной загрузки данных при ошибке.
+     */
     private fun setupErrorHandling() {
         binding.btnRetry.setOnClickListener {
             loadCars()
         }
     }
 
+    /**
+     * Выполнение поиска автомобилей.
+     * Переходит на экран результатов поиска с введенным запросом.
+     */
     private fun performSearch() {
         val query = binding.etSearch.text.toString().trim()
 
@@ -126,12 +181,21 @@ class HomeFragment : Fragment() {
             .commit()
     }
 
+    /**
+     * Отображение состояния загрузки.
+     * Скрывает список автомобилей и показывает индикатор загрузки.
+     */
     private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE
         binding.rvCars.visibility = View.GONE
         binding.llError.visibility = View.GONE
     }
 
+    /**
+     * Загрузка списка автомобилей.
+     * В реальном приложении должен загружать данные с сервера.
+     * В текущей реализации использует тестовые данные.
+     */
     private fun loadCars() {
         // Имитация загрузки данных
         showLoading()
@@ -155,12 +219,21 @@ class HomeFragment : Fragment() {
         }, 1500)
     }
 
+    /**
+     * Отображение списка автомобилей.
+     * Скрывает индикатор загрузки и показывает список.
+     */
     private fun showCarList() {
         binding.progressBar.visibility = View.GONE
         binding.rvCars.visibility = View.VISIBLE
         binding.llError.visibility = View.GONE
     }
 
+    /**
+     * Отображение ошибки.
+     *
+     * @param message Текст сообщения об ошибке
+     */
     private fun showError(message: String) {
         binding.progressBar.visibility = View.GONE
         binding.rvCars.visibility = View.GONE
@@ -168,6 +241,12 @@ class HomeFragment : Fragment() {
         binding.tvErrorMessage.text = message
     }
 
+    /**
+     * Создание тестового списка автомобилей.
+     * В реальном приложении данные должны загружаться с сервера.
+     *
+     * @return Список тестовых автомобилей
+     */
     private fun createMockCarList(): List<Car> {
         return listOf(
             Car(
@@ -238,6 +317,10 @@ class HomeFragment : Fragment() {
         )
     }
 
+    /**
+     * Очистка ресурсов при уничтожении view.
+     * Восстанавливает стандартный вид статус-бара.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         // Восстанавливаем обычный статус-бар при уходе с фрагмента
